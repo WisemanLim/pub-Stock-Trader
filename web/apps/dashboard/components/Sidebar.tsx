@@ -215,9 +215,7 @@ const STATUS_COLOR = {
   down:    '#f85149',  // 적색 (다운)
 } as const;
 
-const BFF_URL = typeof window !== 'undefined'
-  ? (process.env.NEXT_PUBLIC_BFF_URL ?? 'http://localhost:3002')
-  : 'http://localhost:3002';
+const BFF_URL = process.env.NEXT_PUBLIC_BFF_URL ?? '/bff';
 
 type ServiceStatus = Record<string, boolean | undefined>;
 

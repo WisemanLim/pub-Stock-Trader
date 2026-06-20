@@ -2,6 +2,9 @@ FROM node:22-alpine AS base
 RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 
 FROM base AS build
+# BFF_URL is used by next.config.ts rewrites() at build time
+ARG BFF_URL=http://bff:3002
+ENV BFF_URL=$BFF_URL
 WORKDIR /app
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
 COPY apps/dashboard/package.json ./apps/dashboard/
