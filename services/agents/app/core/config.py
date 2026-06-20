@@ -3,8 +3,17 @@ import os
 from pathlib import Path
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-# config.py: <root>/services/agents/app/core/config.py → parents[4] = repo root
-_env_file = str(Path(__file__).resolve().parents[4] / f".env.{os.getenv('APP_ENV', 'local')}")
+
+def _find_env_file() -> str:
+    name = f".env.{os.getenv('APP_ENV', 'local')}"
+    for parent in Path(__file__).resolve().parents:
+        candidate = parent / name
+        if candidate.exists():
+            return str(candidate)
+    return name  # not found; pydantic-settings silently skips missing files
+
+
+_env_file = _find_env_file()
 
 
 class Settings(BaseSettings):
