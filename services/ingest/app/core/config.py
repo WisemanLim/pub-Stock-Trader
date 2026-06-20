@@ -1,9 +1,13 @@
 """ingest — settings (env-driven)."""
+import os
+from pathlib import Path
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+_env_file = str(Path(__file__).resolve().parents[4] / f".env.{os.getenv('APP_ENV', 'local')}")
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env.local", extra="ignore")
+    model_config = SettingsConfigDict(env_file=_env_file, extra="ignore")
 
     app_name: str = "stock-trader-ingest"
     env: str = "local"

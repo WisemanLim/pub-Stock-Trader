@@ -67,7 +67,7 @@ dev-tui:
 
 # ── Web (Next.js dashboard + NestJS BFF) ────────────────────────────────────────
 dev-web:
-	cd web && pnpm -r dev
+	set -a; . ./.env.$(ENV); set +a; cd web && pnpm -r dev
 
 # ── 로컬 전체 기동 (호스트 직접 실행, ENV=local) ────────────────────────────────────
 # 터미널 1개로 전 서비스(py×4 + rust×1 + web×1) 백그라운드 기동.

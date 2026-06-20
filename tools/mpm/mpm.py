@@ -33,7 +33,7 @@ SERVICES = [
     {"name": "risk", "group": "rust", "port": 3001,
      "cmd": "bash -c 'set -a; . ./.env.{env}; set +a; cd core/risk-engine && cargo run'"},
     {"name": "web", "group": "web", "port": 3000,
-     "cmd": "cd web && pnpm -r dev"},
+     "cmd": "bash -c 'set -a; . ./.env.{env}; set +a; cd web && pnpm -r dev'"},
 ]
 
 GROUPS = sorted({s["group"] for s in SERVICES})       # py | rust | web
