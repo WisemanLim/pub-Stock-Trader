@@ -1,0 +1,144 @@
+# ── Python ──────────────────────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+.uv/
+*.egg-info/
+dist/
+build/
+local.db
+local.db-shm
+local.db-wal
+.ruff_cache/
+
+# ── Rust ─────────────────────────────────────────────────────────────────────────
+target/
+
+# ── Node ─────────────────────────────────────────────────────────────────────────
+node_modules/
+.next/
+.turbo/
+web/apps/*/dist/
+web/apps/*/.next/
+
+# ── 환경 변수 (.env.example / .env.local / .env.prod 추적) ──────────────────────
+.env.*
+!.env.example
+!.env.local
+!.env.prod
+
+# ── 시크릿 (절대 커밋 금지 / NEVER commit secrets) ──────────────────────────────
+# 사용자 인증 DB (SQLite) — 실 사용자 데이터 포함, 커밋 금지
+web/apps/dashboard/data/auth.db
+*.secret
+*.key
+*.pem
+*.p12
+*.keystore
+vault-token
+
+# ── AI 코딩 도구 (시스템 생성, 미추적) ──────────────────────────────────────────────
+.omc/
+# .antigravity/
+.review/
+
+# ── IDE / OS ─────────────────────────────────────────────────────────────────────
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ── 시험 아티팩트 ────────────────────────────────────────────────────────────────
+htmlcov/
+.coverage
+lcov.info
+.pytest_cache/
+
+# ===== common / 공통 (env·secrets·logs·editor) =====
+Procfile.dev.gen
+.mpm/
+secrets.*
+.secrets/
+*.log
+logs/
+tmp/
+.tmp/
+*.pid
+*~
+test/**/logs/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.shared.json
+
+# ===== platform / 플랫폼 (macOS·Windows·Linux) =====
+.DS_Store?
+._*
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
+Icon?
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+.directory
+.Trash-*
+.nfs*
+.fuse_hidden*
+
+# ===== Python =====
+*.py[cod]
+*$py.class
+# LSTM 사전학습 체크포인트 (재학습 산출물, 미추적)
+services/*/models/
+*.pt
+*.egg
+.eggs/
+.Python
+venv/
+env/
+ENV/
+.uv-cache/
+pip-log.txt
+.mypy_cache/
+.dmypy.json
+.coverage.*
+.tox/
+.nox/
+*.so
+wheels/
+.ipynb_checkpoints/
+
+# ===== Node / TypeScript =====
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+out/
+.nuxt/
+.svelte-kit/
+.vite/
+coverage/
+.eslintcache
+.npm/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+*.tsbuildinfo
+storybook-static/
+playwright-report/
+test-results/
+
+# ===== Rust =====
+**/*.rs.bk
+*.pdb
+Cargo.lock~
+.gstack/

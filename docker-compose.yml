@@ -1,0 +1,110 @@
+# stock-trader — 통합 인프라 + 서비스 (finance 도메인)
+# `make up`    → infra only (postgres+pgvector, redis)
+# `make build` → docker compose --profile app build
+
+name: stock-trader
+
+services:
+  # ── 인프라 ─────────────────────────────────────────────────────────────────────
+  postgres:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_USER:     ${POSTGRES_USER:-app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-app}
+      POSTGRES_DB:       ${POSTGRES_DB:-stock_trader}
+    ports: ["5432:5432"]
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-app} -d ${POSTGRES_DB:-stock_trader}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redis:
+    image: redis:7.4-alpine
+    ports: ["6379:6379"]
+
+  # ── Python 분석 서비스 ─────────────────────────────────────────────────────────
+  analysis:
+    profiles: ["app"]
+    build: { context: services/analysis }
+    env_file: [".env.${ENV:-local}"]
+    ports: ["8001:8001"]
+    depends_on: [postgres, redis]
+
+  rag:
+    profiles: ["app"]
+    build: { context: services/rag }
+    env_file: [".env.${ENV:-local}"]
+    ports: ["8002:8002"]
+    depends_on: [postgres, redis]
+
+  ingest:
+    profiles: ["app"]
+    build: { context: services/ingest }
+    env_file: [".env.${ENV:-local}"]
+    ports: ["8003:8003"]
+    depends_on: [postgres, redis]
+
+  agents:
+    profiles: ["app"]
+    build: { context: services/agents }
+    env_file: [".env.${ENV:-local}"]
+    ports: ["8004:8004"]
+    depends_on: [postgres, redis, analysis, rag, ingest]
+
+  # ── Rust 리스크/체결 엔진 (F4 Critical — 10ms) ─────────────────────────────────
+  risk-engine:
+    profiles: ["app"]
+    build:
+      context: .
+      dockerfile: core/risk-engine/Dockerfile
+    env_file: [".env.${ENV:-local}"]
+    ports: ["3001:3001"]
+    depends_on: [postgres, redis]
+
+  # ── 웹 대시보드 (F6.2) ──────────────────────────────────────────────────────────
+  bff:
+    profiles: ["app"]
+    build:
+      context: web
+      dockerfile: apps/bff/Dockerfile
+    env_file: [".env.${ENV:-local}"]
+    ports: ["3002:3002"]
+    depends_on: [postgres, redis, risk-engine]
+
+  dashboard:
+    profiles: ["app"]
+    build:
+      context: web
+      dockerfile: apps/dashboard/Dockerfile
+    env_file: [".env.${ENV:-local}"]
+    environment:
+      AUTH_JWT_SECRET: ${AUTH_JWT_SECRET:-}  # env_file의 리터럴 ${...} 덮어쓰기; 쉘 export 값 주입
+      BFF_URL: http://bff:3002               # Docker 내부 네트워크: localhost → 컨테이너 서비스명
+    volumes:
+      - dashboard-data:/app/apps/dashboard/data
+    ports: ["3000:3000"]
+    depends_on: [bff]
+
+  # ── Finance 도메인 확장 인프라 (스케일 시 profiles 로 활성화) ─────────────────────
+  # kafka:
+  #   image: apache/kafka:3.8-alpine
+  #   profiles: ["kafka"]
+  #   ports: ["9092:9092"]
+  #
+  # neo4j:
+  #   image: neo4j:5-community
+  #   profiles: ["graphrag"]
+  #   ports: ["7474:7474", "7687:7687"]
+  #   environment: { NEO4J_AUTH: neo4j/password }
+  #
+  # minio:
+  #   image: minio/minio:latest
+  #   profiles: ["storage"]
+  #   command: server /data --console-address ":9001"
+  #   ports: ["9000:9000", "9001:9001"]
+
+volumes:
+  pgdata:
+  dashboard-data:

@@ -1,0 +1,51 @@
+{
+  "positions": {
+    "208350": {
+      "ticker": "208350",
+      "quantity": 675.0,
+      "avg_price": 2885.43275,
+      "cost_basis": 1947667.10625
+    },
+    "042510": {
+      "ticker": "042510",
+      "quantity": 10.0,
+      "avg_price": 8431.264500000001,
+      "cost_basis": 84312.645
+    },
+    "065370": {
+      "ticker": "065370",
+      "quantity": 100.0,
+      "avg_price": 3670.5505,
+      "cost_basis": 367055.05
+    },
+    "005930": {
+      "ticker": "005930",
+      "quantity": 5.0,
+      "avg_price": 362554.375,
+      "cost_basis": 1812771.875
+    },
+    "263860": {
+      "ticker": "263860",
+      "quantity": 161.0,
+      "avg_price": 13491.278046583851,
+      "cost_basis": 2172095.7655
+    },
+    "000660": {
+      "ticker": "000660",
+      "quantity": 1.0,
+      "avg_price": 2685402.75,
+      "cost_basis": 2685402.75
+    },
+    "402030": {
+      "ticker": "402030",
+      "quantity": 100.0,
+      "avg_price": 13832.0745,
+      "cost_basis": 1383207.45
+    }
+  },
+  "cash": 4547487.358250001,
+  "realized_pnl": 0.0,
+  "realized_by_ticker": {},
+  "applied_orders": {},
+  "halted": false
+}

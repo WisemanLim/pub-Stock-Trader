@@ -1,0 +1,22 @@
+{
+  "name": "@stock-trader/bff",
+  "private": true,
+  "scripts": {
+    "dev": "nest start --watch",
+    "build": "nest build",
+    "start": "node dist/main.js",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@nestjs/common": "11.x",
+    "@nestjs/core": "11.x",
+    "@nestjs/platform-express": "11.x",
+    "reflect-metadata": "0.2.x"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "11.x",
+    "@types/node": "22.x",
+    "typescript": "5.x",
+    "vitest": "2.x"
+  }
+}

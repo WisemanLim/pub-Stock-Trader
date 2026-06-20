@@ -1,0 +1,17 @@
+[package]
+name = "risk-engine"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+axum               = { workspace = true }
+tokio              = { workspace = true }
+serde              = { workspace = true }
+serde_json         = { workspace = true }
+tracing            = { workspace = true }
+tracing-subscriber = { workspace = true }
+# F5 가상체결 거래기록 영속화(전자금융거래법 §22 정신).
+sqlx = { version = "0.8", features = ["runtime-tokio-rustls", "postgres"] }
+
+[features]
+default = []

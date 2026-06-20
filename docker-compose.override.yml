@@ -1,0 +1,37 @@
+# docker-compose.override.yml — dev 오버라이드 (자동 로드, git 추적)
+# `docker compose --profile app up` 시 이 파일이 자동 병합됨.
+# 직접실행 우선 전략 → 기본 `make up` 은 인프라만 기동.
+# compose로 앱까지 띄울 때: make build && docker compose --profile app up
+
+services:
+  # ── Python 서비스: 소스 볼륨 마운트 + --reload (개발 편의) ────────────────────
+  analysis:
+    volumes:
+      - ./services/analysis:/app
+    command: ["uv", "run", "uvicorn", "app.main:app",
+              "--host", "0.0.0.0", "--port", "8001", "--reload"]
+
+  rag:
+    volumes:
+      - ./services/rag:/app
+    command: ["uv", "run", "uvicorn", "app.main:app",
+              "--host", "0.0.0.0", "--port", "8002", "--reload"]
+
+  ingest:
+    volumes:
+      - ./services/ingest:/app
+    command: ["uv", "run", "uvicorn", "app.main:app",
+              "--host", "0.0.0.0", "--port", "8003", "--reload"]
+
+  agents:
+    volumes:
+      - ./services/agents:/app
+    command: ["uv", "run", "uvicorn", "app.main:app",
+              "--host", "0.0.0.0", "--port", "8004", "--reload"]
+
+  # ── pgvector 초기화 확장 (최초 1회) ─────────────────────────────────────────────
+  postgres:
+    environment:
+      POSTGRES_USER:     ${POSTGRES_USER:-app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-app}
+      POSTGRES_DB:       ${POSTGRES_DB:-stock_trader}

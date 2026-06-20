@@ -1,0 +1,9 @@
+# MPM(멀티프로세스 매니저) 개발 오케스트레이션 — 전 서비스 1회 기동.
+# 실행: make dev-all  (honcho, uvx 로 임시 실행 — 별도 설치 불필요)
+# 환경: ENV 기본 local. Rust 는 .env.local 을 환경변수로 로드.
+ingest: cd services/ingest && APP_ENV=local uv run uvicorn app.main:app --reload --port 8003
+analysis: cd services/analysis && APP_ENV=local uv run uvicorn app.main:app --reload --port 8001
+rag: cd services/rag && APP_ENV=local uv run uvicorn app.main:app --reload --port 8002
+agents: cd services/agents && APP_ENV=local uv run uvicorn app.main:app --reload --port 8004
+risk: bash -c 'set -a; . ./.env.local; set +a; cd core/risk-engine && cargo run'
+web: cd web && pnpm -r dev
