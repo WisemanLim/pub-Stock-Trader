@@ -132,6 +132,11 @@ services/ingest/.env.local, services/analysis/.env.local, ...
 ### A) docker compose (멀티서비스)
 
 ```bash
+# ── 환경 초기화 (첫 설치 · node_modules·.venv 재설치 시) ────────
+make setup               # ENV=local (기본) — web/node_modules·services/*/.venv 삭제·재설치 + uv sync
+make setup-local         # local 단축키 (서비스 중지 → 재설치 → make local-all 로 기동)
+make setup-prod          # prod  단축키  — 이미지 빌드만
+
 make up                  # 인프라만 (postgres+pgvector, redis). ENV=local
 make up-app              # 전체 앱 스택(app 프로파일)까지 컨테이너 기동
 make build               # docker compose --profile app build
